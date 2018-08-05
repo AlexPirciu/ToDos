@@ -1,18 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using ToDos.Models;
+using ToDos.Services;
 
 namespace ToDos.Controllers
 {
-    public class HomeController : Controller
+    public class TodoController : Controller
     {
-        public IActionResult Index()
+        private readonly ITodoItemService todoItemService;
+
+        public TodoController(ITodoItemService todoItemService)
         {
-            return View();
+            this.todoItemService = todoItemService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            ViewData["Message"] = "Manage your to do list.";
+            var items = await todoItemService.GetIncompleteItemsAsync();
+            var model = new TodoViewModel()
+            {
+                Items = items
+            };
+            return View(model);
         }
 
         public IActionResult About()
@@ -24,8 +35,6 @@ namespace ToDos.Controllers
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
-
             return View();
         }
 
