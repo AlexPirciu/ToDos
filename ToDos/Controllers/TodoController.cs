@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using ToDos.Models;
@@ -63,6 +64,22 @@ namespace ToDos.Controllers
                 return BadRequest(new { error = "Could not add item" });
             }
 
+            return RedirectToAction("Index");
+        }
+
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MarkDone(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var succesful = await todoItemService.MarkDoneAsync(id);
+            if (!succesful)
+            {
+                return BadRequest(new { error = "Could not mark item as done." });
+            }
             return RedirectToAction("Index");
         }
     }
