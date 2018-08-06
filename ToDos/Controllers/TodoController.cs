@@ -48,5 +48,22 @@ namespace ToDos.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddItem(TodoItemModel newItem)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var succesful = await todoItemService.AddItemAsync(newItem);
+            if (!succesful)
+            {
+                return BadRequest(new { error = "Could not add item" });
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }

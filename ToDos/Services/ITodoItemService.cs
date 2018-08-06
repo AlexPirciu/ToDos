@@ -7,5 +7,7 @@ namespace ToDos.Services
     public interface ITodoItemService
     {
         Task<List<TodoItemModel>> GetIncompleteItemsAsync();
+
+        Task<bool> AddItemAsync(TodoItemModel newItem);
     }
 }
