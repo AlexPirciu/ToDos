@@ -64,7 +64,7 @@ namespace ToDos
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Todo}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
